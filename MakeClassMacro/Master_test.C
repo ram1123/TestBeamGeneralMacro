@@ -11,7 +11,7 @@
 using namespace std;
 void Master_test( ){//main programme
     TChain* t = new TChain("rd51tbgeo");
-    t->Add("CRC-Run0308_Muon_10k_MSPL4_HVScan_710pt7_710pt1_710pt0_T20_T20_T20_Lat21-141010_224141-0.root");
+    t->Add("../CRC-Run0308_Muon_10k_MSPL4_HVScan_710pt7_710pt1_710pt0_T20_T20_T20_Lat21-141010_224141-0.root");
     
     ClassReadTree CRC(t);
 
@@ -20,8 +20,8 @@ void Master_test( ){//main programme
     TGraphErrors *gr2 = new TGraphErrors(t->GetEntries());
     TGraphErrors *gr3 = new TGraphErrors(t->GetEntries());
 
-    for( int iEv = 0 ; iEv < t->GetEntries() ; iEv++){//
-    //for( int iEv = 0 ; iEv < 10 ; iEv++){//	Event Loop Starts
+    //for( int iEv = 0 ; iEv < t->GetEntries() ; iEv++){//
+    for( int iEv = 0 ; iEv < 10 ; iEv++){//	Event Loop Starts
 	t->GetEntry(iEv);
 
 	//cout<<"===>  "<<CRC.g1xcl_geoposX[0]<<endl;
