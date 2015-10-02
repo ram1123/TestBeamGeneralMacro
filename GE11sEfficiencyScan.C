@@ -28,7 +28,6 @@
 #include "TGaxis.h"
 #include "TFrame.h"
 #include "TLegend.h"
-//#include ".h"
 
 void GE11sEfficiencyScan()
 {

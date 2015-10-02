@@ -21,24 +21,24 @@ void Master_test( ){//main programme
     TGraphErrors *gr3 = new TGraphErrors(t->GetEntries());
 
     //for( int iEv = 0 ; iEv < t->GetEntries() ; iEv++){//
-    for( int iEv = 0 ; iEv < 10 ; iEv++){//	Event Loop Starts
+    for( int iEv = 0 ; iEv < 8 ; iEv++){//	Event Loop Starts
 	t->GetEntry(iEv);
 
 	//cout<<"===>  "<<CRC.g1xcl_geoposX[0]<<endl;
 	//cout<<"===>  "<<CRC.g2xcl_geoposX[0]<<endl;
 	//cout<<"===>  "<<CRC.g3xcl_geoposX[0]<<endl;
 	if (CRC.g1xcl_geoposX[0]>0)
-	    gr1->SetPoint(iEv, 100, CRC.g1xcl_geoposX[0]);
-	else
-	    gr1->SetPoint(iEv, 100, -10);
+	    gr1->SetPoint(iEv*3, 100, CRC.g1xcl_geoposX[0]);
+//	else
+//	    gr1->SetPoint(iEv*3, 100, -10);
 	if (CRC.g2xcl_geoposX[0]>0)
-	    gr2->SetPoint(iEv, 380, CRC.g2xcl_geoposX[0]);
-	else
-	    gr2->SetPoint(iEv, 380, -10);
+	    gr1->SetPoint(iEv*3+1, 380, CRC.g2xcl_geoposX[0]);
+//	else
+//	    gr1->SetPoint(iEv*3+1, 380, -10);
 	if (CRC.g3xcl_geoposX[0]>0)
-	    gr3->SetPoint(iEv, 830, CRC.g3xcl_geoposX[0]);
-	else
-	    gr3->SetPoint(iEv, 830, -10);
+	    gr1->SetPoint(iEv*3+2, 830, CRC.g3xcl_geoposX[0]);
+//	else
+//	    gr1->SetPoint(iEv*3+2, 830, -10);
 
 	
     }// End Event Loop
@@ -51,7 +51,7 @@ void Master_test( ){//main programme
     gr1->GetXaxis()->SetRangeUser(50., 900.);
     gr2->GetXaxis()->SetRangeUser(50., 900.);
     gr3->GetXaxis()->SetRangeUser(50., 900.);
-    //gr1->Draw("AP*");
+    gr1->Draw("AP");
     //gr3->Draw("AP");
     //gr2->Draw("samesP*");
     //gr3->Draw("samesP*");
@@ -59,6 +59,6 @@ void Master_test( ){//main programme
     mg->Add(gr1);
     mg->Add(gr2);
     mg->Add(gr3);
-    mg->Draw("AP");
+    //mg->Draw("APL");
     c1->SaveAs("Hit_Distribution.pdf");
 }

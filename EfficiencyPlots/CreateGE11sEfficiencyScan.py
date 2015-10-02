@@ -186,7 +186,7 @@ for b in (308, 1375):
         print '   gr6->Draw("CP");'
         print ''
         print '   //Draw the Legend '
-        print '   TLegend *leg = new TLegend(0.46,0.132,0.76,0.43);'
+        print '   TLegend *leg = new TLegend(0.46,0.332,0.76,0.63);'
         print '   leg->AddEntry(gr1,"GE11_IV eff","LPE");'
         print '   leg->AddEntry(gr3,"GE11_IV_GIF eff","LPE");'
         print '   leg->AddEntry(gr4,"GE11_V eff","LPE");'

@@ -56,7 +56,8 @@ void ReadTree(){
     TCut cut_entries_g1 = "g1ycl@.GetEntries()==1 && g1xcl@.GetEntries()==1";
     TCut cut_entries_g2 = "g2ycl@.GetEntries()==1 && g2xcl@.GetEntries()==1";
     TCut cut_entries_g3 = "g3ycl@.GetEntries()==1 && g3xcl@.GetEntries()==1";
-    TCut cut_entries	= cut_entries_g1 && cut_entries_g2 && cut_entries_g3;
+    //TCut cut_entries	= cut_entries_g1 && cut_entries_g2 && cut_entries_g3;
+    TCut cut_entries	= "";
     //TCut cut_chi2	= "tracky.chi2 < 10 && trackx.chi2 < 10";
     //TCut cut_residual	= "residualx < 2. && residualy < 2.";
     //TCut cut_all	= cut_entries && cut_chi2 && cut_residual;
@@ -66,12 +67,12 @@ void ReadTree(){
     cout<<"Entries = "<<entries<<endl;
 
     // Loop over events.
-    //for(int event = 0; event<entries;event+=50)
-    for(int event = 0; event<40;event+=50)
+    for(int event = 0; event<entries;event+=9000)
+    //for(int event = 0; event<40;event+=50)
     {
     //rd51tbgeo->Draw("g1xcl.geoposch:g2xcl.geoposch:g3xcl.geoposch",cut_entries_g1 && cut_entries_g2 && cut_entries_g3 && cut_chi2 && cut_residual ,"PARA",50,event);
     //rd51tbgeo->Draw("g1xcl.geoposch:g2xcl.geoposch:g3xcl.geoposch",cut_entries_g1 && cut_entries_g2 && cut_entries_g3 ,"PARA",50,event);
-    rd51tbgeo->Draw("g1xcl.geoposX:g2xcl.geoposX:g3xcl.geoposX",cut_entries ,"PARA",20,event);
+    rd51tbgeo->Draw("g1xcl.geoposX:g2xcl.geoposX:g3xcl.geoposX",cut_entries ,"PARA",400,event);
     TParallelCoord* para = (TParallelCoord*)gPad->GetListOfPrimitives()->FindObject("ParaCoord");
     //TColor *col26 = gROOT->GetColor(26); col26->SetAlpha(0.01);
     //para->SetLineColor(26);
@@ -79,6 +80,7 @@ void ReadTree(){
     //g1xcl->AddRange(new TParallelCoordRange(g1xcl,60,180));
     para->SetGlobalMin(0);
     para->SetGlobalMax(100);
+    para->SetLineWidth(2);
     canvas->Update();
 
     //canvas->SaveAs(Form("cluster_position_%d.pdf",event));
