@@ -80,11 +80,11 @@ void GE11sEfficiencyScan(int RunNumber, string RunName, string path)
      InGE11_IV_GIF >> NameOfDet >> xRange >> temp_MeanPosOfSector >> temp_Efficiency >> temp_EfficiencyError >> temp_Nevents;
 	if (!InGE11_IV_GIF.good()) break;
 
-     GIF_MeanPosOfSector.push_back(temp_MeanPosOfSector/*+(nlines*5)*/);
+     GIF_MeanPosOfSector.push_back(temp_MeanPosOfSector+(nlines*5));
      GIF_Efficiency.push_back(temp_Efficiency);
      GIF_EfficiencyError.push_back(temp_EfficiencyError);
      GIF_Nevents.push_back(temp_Nevents);
-    	GE11_IV_GIF->Fill(temp_MeanPosOfSector/*+(nlines*5)*/,temp_Efficiency,temp_EfficiencyError,temp_Nevents);
+    	GE11_IV_GIF->Fill(temp_MeanPosOfSector+(nlines*5),temp_Efficiency,temp_EfficiencyError,temp_Nevents);
 	nlines++;
 	if (nlines > 20) 
 	{
@@ -100,11 +100,11 @@ void GE11sEfficiencyScan(int RunNumber, string RunName, string path)
      InGE11_IV >> NameOfDet >> xRange >> temp_MeanPosOfSector >> temp_Efficiency >> temp_EfficiencyError >> temp_Nevents;
 	if (!InGE11_IV.good()) break;
 
-     IV_MeanPosOfSector.push_back(temp_MeanPosOfSector/*+(nlines*5)*/);
+     IV_MeanPosOfSector.push_back(temp_MeanPosOfSector+(nlines*5));
      IV_Efficiency.push_back(temp_Efficiency);
      IV_EfficiencyError.push_back(temp_EfficiencyError);
      IV_Nevents.push_back(temp_Nevents);
-    	GE11_IV->Fill(temp_MeanPosOfSector/*+(nlines*5)*/,temp_Efficiency,temp_EfficiencyError,temp_Nevents);
+    	GE11_IV->Fill(temp_MeanPosOfSector+(nlines*5),temp_Efficiency,temp_EfficiencyError,temp_Nevents);
 	nlines++;
    }
 
@@ -115,11 +115,11 @@ void GE11sEfficiencyScan(int RunNumber, string RunName, string path)
      InGE11_V >> NameOfDet >> xRange >> temp_MeanPosOfSector >> temp_Efficiency >> temp_EfficiencyError >> temp_Nevents;
 	if (!InGE11_V.good()) break;
 
-     V_MeanPosOfSector.push_back(temp_MeanPosOfSector/*+(nlines*5)*/);
+     V_MeanPosOfSector.push_back(temp_MeanPosOfSector+(nlines*5));
      V_Efficiency.push_back(temp_Efficiency);
      V_EfficiencyError.push_back(temp_EfficiencyError);
      V_Nevents.push_back(temp_Nevents);
-    	GE11_V->Fill(temp_MeanPosOfSector/*+(nlines*5)*/,temp_Efficiency,temp_EfficiencyError,temp_Nevents);
+    	GE11_V->Fill(temp_MeanPosOfSector+(nlines*5),temp_Efficiency,temp_EfficiencyError,temp_Nevents);
 	nlines++;
    }
 
