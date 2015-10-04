@@ -1,14 +1,22 @@
 import os
 import subprocess
-for n in range(306,408):
+
+#pathOfInputFile="/home/ramkrishna/TEMP/LogFiles_TB/LogFiles306To407"    # Modified by user
+#pathOfInputFile="/home/ramkrishna/TEMP/LogFiles_TB/2014H2C_LogFiles_1257To1312_1398To1426"
+pathOfInputFile="/home/ramkrishna/TEMP/LogFiles_TB/2014H4C_LogFiles_2064To2123"
+
+#for n in range(306,307):                                                # Modified by user
+for n in range(2064,2123):                                                # Modified by user
     #os.system('grep Run0306 RunList.dat')
     #output = subprocess.check_output("grep Run0306 RunList.dat", shell=True)
     #print "Output = ",output
     #output = output.replace(" ", "")
-    with open("RunList.dat") as openfile:
+    #with open("RunList.dat") as openfile:                               # This input file list is for H2 only
+    with open("H4RunList.dat") as openfile:                               # This input file list is for H2 only
         for line in openfile:
             for part in line.split():
-                if "Run0"+str(n) in part:
+                if "Run"+str(n) in part:                               # Modified by user "Run0" should be replaced accordingly
                     output=part
-    print('root -l -b -q GE11sEfficiencyScan.C\('+str(n)+',\\"'+output+'\\"\)')
-    os.system('root -l -b -q GE11sEfficiencyScan.C\('+str(n)+',\\"'+output+'\\"\)')
+                    print "RunName : ",output
+    print('root -l -b -q GE11sEfficiencyScan.C\('+str(n)+',\\"'+output+'\\",\\"'+pathOfInputFile+'\\"\)')
+    os.system('root -l -b -q GE11sEfficiencyScan.C\('+str(n)+',\\"'+output+'\\",\\"'+pathOfInputFile+'\\"\)')

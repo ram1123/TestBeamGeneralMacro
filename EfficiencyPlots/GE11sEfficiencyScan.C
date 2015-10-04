@@ -14,7 +14,12 @@
  *   Organization:  CERN
  *
  *
- *  BUG: X-axis of the two y-axis does not match.
+ *  BUG: 
+ *	1. X-axis of the two y-axis does not match.
+ *
+ *  Things to implement:
+ *	1. Put the Ntuples in a directory named according to run Number
+ *
  * =====================================================================================
  */
 
@@ -31,12 +36,12 @@
 #include "TFrame.h"
 #include "TLegend.h"
 
-void GE11sEfficiencyScan(int RunNumber, string RunName)
+void GE11sEfficiencyScan(int RunNumber, string RunName, string path)
 {
    
    ifstream InGE11_IV_GIF, InGE11_IV, InGE11_V;
 
-   string path = "/home/ramkrishna/TEMP/LogFiles_TB/LogFiles306To407";	    
+   //string path = "/home/ramkrishna/TEMP/LogFiles_TB/LogFiles306To407";	    
 
    string gif	= path+"/Efficiency_LC1_"+std::to_string(RunNumber)+".log";
    string IV	= path+"/Efficiency_LC2_"+std::to_string(RunNumber)+".log";
@@ -50,9 +55,10 @@ void GE11sEfficiencyScan(int RunNumber, string RunName)
    string rootFile = "Efficiency_Run"+std::to_string(RunNumber)+".root";
    const char *CharrootFile = rootFile.c_str();
    TFile *f = new TFile(CharrootFile,"RECREATE");
-   TNtuple *GE11_IV_GIF = new TNtuple("GE11_IV_GIF","data from ascii file LC1","MeanPosOfSector:Efficiency:EfficiencyError:Nevents");
-   TNtuple *GE11_IV = new TNtuple("GE11_IV","data from ascii file LC2","MeanPosOfSector:Efficiency:EfficiencyError:Nevents");
-   TNtuple *GE11_V = new TNtuple("GE11_V","data from ascii file LC3","MeanPosOfSector:Efficiency:EfficiencyError:Nevents");
+   //TTree *tree = new TTree("Run306", "Detector info for Run 306");
+   TNtuple *GE11_IV_GIF = new TNtuple("GE11_IV_GIF","data from text file LC1","MeanPosOfSector:Efficiency:EfficiencyError:Nevents");
+   TNtuple *GE11_IV = new TNtuple("GE11_IV","data from text file LC2","MeanPosOfSector:Efficiency:EfficiencyError:Nevents");
+   TNtuple *GE11_V = new TNtuple("GE11_V","data from text file LC3","MeanPosOfSector:Efficiency:EfficiencyError:Nevents");
 
    Int_t nlines = 0;
 
@@ -74,11 +80,11 @@ void GE11sEfficiencyScan(int RunNumber, string RunName)
      InGE11_IV_GIF >> NameOfDet >> xRange >> temp_MeanPosOfSector >> temp_Efficiency >> temp_EfficiencyError >> temp_Nevents;
 	if (!InGE11_IV_GIF.good()) break;
 
-     GIF_MeanPosOfSector.push_back(temp_MeanPosOfSector+(nlines*5));
+     GIF_MeanPosOfSector.push_back(temp_MeanPosOfSector/*+(nlines*5)*/);
      GIF_Efficiency.push_back(temp_Efficiency);
      GIF_EfficiencyError.push_back(temp_EfficiencyError);
      GIF_Nevents.push_back(temp_Nevents);
-    	GE11_IV_GIF->Fill(temp_MeanPosOfSector+(nlines*5),temp_Efficiency,temp_EfficiencyError,temp_Nevents);
+    	GE11_IV_GIF->Fill(temp_MeanPosOfSector/*+(nlines*5)*/,temp_Efficiency,temp_EfficiencyError,temp_Nevents);
 	nlines++;
 	if (nlines > 20) 
 	{
@@ -94,11 +100,11 @@ void GE11sEfficiencyScan(int RunNumber, string RunName)
      InGE11_IV >> NameOfDet >> xRange >> temp_MeanPosOfSector >> temp_Efficiency >> temp_EfficiencyError >> temp_Nevents;
 	if (!InGE11_IV.good()) break;
 
-     IV_MeanPosOfSector.push_back(temp_MeanPosOfSector+(nlines*5));
+     IV_MeanPosOfSector.push_back(temp_MeanPosOfSector/*+(nlines*5)*/);
      IV_Efficiency.push_back(temp_Efficiency);
      IV_EfficiencyError.push_back(temp_EfficiencyError);
      IV_Nevents.push_back(temp_Nevents);
-    	GE11_IV->Fill(temp_MeanPosOfSector+(nlines*5),temp_Efficiency,temp_EfficiencyError,temp_Nevents);
+    	GE11_IV->Fill(temp_MeanPosOfSector/*+(nlines*5)*/,temp_Efficiency,temp_EfficiencyError,temp_Nevents);
 	nlines++;
    }
 
@@ -109,18 +115,18 @@ void GE11sEfficiencyScan(int RunNumber, string RunName)
      InGE11_V >> NameOfDet >> xRange >> temp_MeanPosOfSector >> temp_Efficiency >> temp_EfficiencyError >> temp_Nevents;
 	if (!InGE11_V.good()) break;
 
-     V_MeanPosOfSector.push_back(temp_MeanPosOfSector+(nlines*5));
+     V_MeanPosOfSector.push_back(temp_MeanPosOfSector/*+(nlines*5)*/);
      V_Efficiency.push_back(temp_Efficiency);
      V_EfficiencyError.push_back(temp_EfficiencyError);
      V_Nevents.push_back(temp_Nevents);
-    	GE11_V->Fill(temp_MeanPosOfSector+(nlines*5),temp_Efficiency,temp_EfficiencyError,temp_Nevents);
+    	GE11_V->Fill(temp_MeanPosOfSector/*+(nlines*5)*/,temp_Efficiency,temp_EfficiencyError,temp_Nevents);
 	nlines++;
    }
 
    InGE11_V.close();
    string CanvasName = "RunNumber"+std::to_string(RunNumber);
    const char * CharCanvasName = CanvasName.c_str();
-   TCanvas* c1 = new TCanvas(CharCanvasName,"gerrors2",200,10,700,500);
+   TCanvas* c1 = new TCanvas(CharCanvasName,"Efficiency Scan Plot",200,10,700,500);
    TPad *pad = new TPad("pad","",0,0,1,1);
    //pad->SetFillColor(42);
    pad->SetGrid();
@@ -234,7 +240,7 @@ void GE11sEfficiencyScan(int RunNumber, string RunName)
 
    const char *runnum = RunName.c_str();
    
-   TLatex *t2a = new TLatex(0.10,0.94, runnum  );
+   TLatex *t2a = new TLatex(0.00,0.94, runnum  );
    t2a->SetNDC();
    t2a->SetTextFont(42);
    t2a->SetTextSize(0.033);
@@ -255,6 +261,8 @@ void GE11sEfficiencyScan(int RunNumber, string RunName)
    c1->SaveAs(CharOutputFileName);
 
    c1->Write();
+   //tree->Write();
+   //tree->Write("", TObject::kOverwrite);
    f->Write();
 
 }
