@@ -38,23 +38,25 @@ void GE11sEfficiencyPlots()
    
    // Input Files 
    ifstream File1, File2, File3;
-   File1.open("EfficiencyData_R306_R407_Lat21_GE11_IV_GIF.txt");
-   File2.open("EfficiencyData_R306_R407_Lat21_GE11_IV.txt");
-   File3.open("EfficiencyData_R306_R407_Lat22_GE11_V.txt");
+   File1.open("EfficiencyData_R1592_R1646_Lat16_GE11_IV_GIF.txt");
+   File2.open("EfficiencyData_R1592_R1646_Lat17_GE11_IV_GIF.txt");
+   File3.open("EfficiencyData_R1592_R1646_Lat17_GE11_IV.txt");
 
    // Name of Detector
-   const char*  Detector1 = "Latency 21: GE11_IV_GIF";
-   const char*  Detector2 = "Latency 21: GE11_IV";
-   const char*  Detector3 = "Latency 22: GE11_V";
+   const char*  Detector1 = "Latency 16: GE11_IV_GIF";
+   const char*  Detector2 = "Latency 17: GE11_IV_GIF";
+   const char*  Detector3 = "Latency 17: GE11_IV";
 
-   const char* RunRange = "Runs 306-407";
+   const char* RunRange = "Runs 1592-1646";
    const char* BeamType = "Beam: Muon";
    const char* MSPL = "MSPL 4";
+   const char* Threshold = "Threshold=15 VFAT units";
    const char* ClockMode = "Async Mode";
+   const char* EtaPhiSector = "(i#eta,i#phi)=(5,2)";
 
-   const char* CanvasName   = "Efficiency_R306_R407";
-   const char* pdfFile	    = "Efficiency_R306_R407.pdf";
-   TFile *f = new   TFile(    "Efficiency_R306_R407.root","RECREATE");
+   const char* CanvasName   = "Efficiency_R1592_R1646";
+   const char* pdfFile	    = "Efficiency_R1592_R1646.pdf";
+   TFile *f = new   TFile(    "Efficiency_R1592_R1646.root","RECREATE");
 
    //const char* GraphTitle = "Efficiency For Run Range 306 To 407: 2014H2B";
    const char* GraphTitle = "";
@@ -67,9 +69,9 @@ void GE11sEfficiencyPlots()
    extraText  = "Preliminary";  // default extra text is "Preliminary"
    int iPeriod = 0;    // 1=7TeV, 2=8TeV, 3=7+8TeV, 7=7+8+13TeV, 0=free form (uses lumi_sqrtS)
 
-   TNtuple *NT_Detector1 = new TNtuple(Detector1,"data from text file","NT_Detector1_HV:NT_Detector1_Eff:NT_Detector1_EffErr");
-   TNtuple *NT_Detector2 = new TNtuple(Detector2,"data from text file","NT_Detector2_HV:NT_Detector2_Eff:NT_Detector2_EffErr");
-   TNtuple *NT_Detector3 = new TNtuple(Detector3,"data from text file","NT_Detector3_HV:NT_Detector3_Eff:NT_Detector3_EffErr");
+   TNtuple *NT_Detector1 = new TNtuple(Detector1,"data from text file","NT_Detector1_CurrentToHVDivider:NT_Detector1_Eff:NT_Detector1_EffErr");
+   TNtuple *NT_Detector2 = new TNtuple(Detector2,"data from text file","NT_Detector2_CurrentToHVDivider:NT_Detector2_Eff:NT_Detector2_EffErr");
+   TNtuple *NT_Detector3 = new TNtuple(Detector3,"data from text file","NT_Detector3_CurrentToHVDivider:NT_Detector3_Eff:NT_Detector3_EffErr");
 
    Int_t nlines = 0;
 
@@ -139,6 +141,7 @@ void GE11sEfficiencyPlots()
    gr1->GetXaxis()->SetTitle("Current Supplied To HV Divider (uA)");
    gr1->GetYaxis()->SetTitle("Efficiency");
    gr1->SetTitle(GraphTitle);
+   gr1->GetXaxis()->SetRangeUser(500,810);
    gr1->Draw("ACP");
       // create first graph
    TGraphErrors *gr5 = new TGraphErrors(NT_Detector2_HV.size());
@@ -153,6 +156,7 @@ void GE11sEfficiencyPlots()
    gr5->GetXaxis()->SetTitle("Current Supplied To HV Divider (uA)");
    gr5->GetYaxis()->SetTitle("Efficiency");
    gr5->SetTitle(GraphTitle);
+   gr5->GetXaxis()->SetRangeUser(500,810);
    gr5->Draw("SameCP");
       // create first graph
    TGraphErrors *gr8 = new TGraphErrors(NT_Detector3_HV.size());
@@ -167,9 +171,10 @@ void GE11sEfficiencyPlots()
    gr8->GetXaxis()->SetTitle("Current Supplied To HV Divider (uA)");
    gr8->GetYaxis()->SetTitle("Efficiency");
    gr8->SetTitle(GraphTitle);
+   gr8->GetXaxis()->SetRangeUser(500,810);
    gr8->Draw("SameCP");
    //Draw the Legend 
-   TLegend *leg = new TLegend(0.61,0.200,0.92,0.40);
+   TLegend *leg = new TLegend(0.65,0.150,0.94,0.38);
    //leg->AddEntry(gr1,"(i#eta,i#phi)=(1,2)","LPE");
    //leg->AddEntry(gr5,"(i#eta,i#phi)=(5,2)","LPE");
    //leg->AddEntry(gr8,"(i#eta,i#phi)=(8.2)","LPE");
@@ -179,14 +184,19 @@ void GE11sEfficiencyPlots()
 
    leg->Draw("same");
 
-   TLatex *text1 = new TLatex(540,0.95,RunRange);
-   TLatex *text2 = new TLatex(540,0.88,BeamType);
-   TLatex *text3 = new TLatex(540,0.80,MSPL);
-   TLatex *text4 = new TLatex(540,0.72,ClockMode);
+   TLatex *text1 = new TLatex(560,0.95,RunRange);
+   TLatex *text2 = new TLatex(560,0.88,BeamType);
+   TLatex *text3 = new TLatex(560,0.80,MSPL);
+   TLatex *text4 = new TLatex(560,0.72,Threshold);
+   TLatex *text5 = new TLatex(560,0.64,ClockMode);
+   TLatex *text6 = new TLatex(560,0.56,EtaPhiSector);
+   //TLatex *text4 = new TLatex(540,0.72,ClockMode);
    text1->Draw("same");
    text2->Draw("same");
    text3->Draw("same");
    text4->Draw("same");
+   text5->Draw("same");
+   text6->Draw("same");
 
    CMS_lumi( c1, iPeriod, 0 );
    

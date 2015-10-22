@@ -80,11 +80,11 @@ void GE11sEfficiencyScan(int RunNumber, string RunName, string path)
      InGE11_IV_GIF >> NameOfDet >> xRange >> temp_MeanPosOfSector >> temp_Efficiency >> temp_EfficiencyError >> temp_Nevents;
 	if (!InGE11_IV_GIF.good()) break;
 
-     GIF_MeanPosOfSector.push_back(temp_MeanPosOfSector+(nlines*5));
+     GIF_MeanPosOfSector.push_back(temp_MeanPosOfSector/*+(nlines*5)*/);
      GIF_Efficiency.push_back(temp_Efficiency);
      GIF_EfficiencyError.push_back(temp_EfficiencyError);
      GIF_Nevents.push_back(temp_Nevents);
-    	GE11_IV_GIF->Fill(temp_MeanPosOfSector+(nlines*5),temp_Efficiency,temp_EfficiencyError,temp_Nevents);
+    	GE11_IV_GIF->Fill(temp_MeanPosOfSector/*+(nlines*5)*/,temp_Efficiency,temp_EfficiencyError,temp_Nevents);
 	nlines++;
 	if (nlines > 20) 
 	{
@@ -104,7 +104,7 @@ void GE11sEfficiencyScan(int RunNumber, string RunName, string path)
      IV_Efficiency.push_back(temp_Efficiency);
      IV_EfficiencyError.push_back(temp_EfficiencyError);
      IV_Nevents.push_back(temp_Nevents);
-    	GE11_IV->Fill(temp_MeanPosOfSector+(nlines*5),temp_Efficiency,temp_EfficiencyError,temp_Nevents);
+    	GE11_IV->Fill(temp_MeanPosOfSector/*+(nlines*5)*/,temp_Efficiency,temp_EfficiencyError,temp_Nevents);
 	nlines++;
    }
 
@@ -119,7 +119,7 @@ void GE11sEfficiencyScan(int RunNumber, string RunName, string path)
      V_Efficiency.push_back(temp_Efficiency);
      V_EfficiencyError.push_back(temp_EfficiencyError);
      V_Nevents.push_back(temp_Nevents);
-    	GE11_V->Fill(temp_MeanPosOfSector+(nlines*5),temp_Efficiency,temp_EfficiencyError,temp_Nevents);
+    	GE11_V->Fill(temp_MeanPosOfSector/*+(nlines*5)*/,temp_Efficiency,temp_EfficiencyError,temp_Nevents);
 	nlines++;
    }
 
@@ -155,22 +155,26 @@ void GE11sEfficiencyScan(int RunNumber, string RunName, string path)
        gr_V->SetPoint(i, V_MeanPosOfSector[i], V_Efficiency[i]);
        gr_V->SetPointError(i,0, V_EfficiencyError[i]);
    }
-   gr_GIF->SetMarkerColor(kBlue);
-   gr_GIF->SetLineColor(kBlue);
-   gr_GIF->SetMarkerStyle(21);
+   gr_GIF->SetMarkerColor(kBlack);
+   gr_GIF->SetLineColor(kBlack);
+   gr_GIF->SetMarkerStyle(23);
    gr_GIF->GetXaxis()->SetTitle("dist (mm)");
    gr_GIF->GetYaxis()->SetTitle("Efficiency");
-   gr_GIF->GetYaxis()->SetRangeUser(0,1.2);
+   gr_GIF->GetYaxis()->SetRangeUser(0,1.1);
    gr_GIF->SetTitle("Efficiency Scan");
-   gr_GIF->Draw("ACP");
-   gr_IV->SetMarkerColor(kGreen-6);
-   gr_IV->SetLineColor(kGreen);
-   gr_IV->SetMarkerStyle(21);
-   gr_IV->Draw("sameCP");
+//   gr_GIF->Draw("AP");
+   gr_IV->GetYaxis()->SetTitle("Efficiency");
+   gr_IV->GetXaxis()->SetTitle("Distance (mm) of selected patch of 5mm in #left(i#eta, i#phi#right) = #left(5,2#right) sector");
+   gr_IV->SetMarkerColor(kBlack);
+   gr_IV->SetLineColor(kBlack);
+   gr_IV->SetMarkerStyle(22);
+   gr_IV->Draw("AP");
+   gr_IV->GetYaxis()->SetDecimals(1);
+//   gr_IV->Draw("sameP");
    gr_V->SetMarkerColor(kBlack);
    gr_V->SetLineColor(kBlack);
    gr_V->SetMarkerStyle(21);
-   gr_V->Draw("sameCP");
+//   gr_V->Draw("sameP");
 
    //create a transparent pad drawn on top of the main pad
    c1->cd();
@@ -193,23 +197,23 @@ void GE11sEfficiencyScan(int RunNumber, string RunName, string path)
        gr_V_Num->SetPoint(i,V_MeanPosOfSector[i],V_Nevents[i]);
 
    }
-   gr_GIF_Num->SetMarkerColor(kBlue);
-   gr_GIF_Num->SetLineColor(kBlue);
+   gr_GIF_Num->SetMarkerColor(kRed);
+   gr_GIF_Num->SetLineColor(kRed);
    gr_GIF_Num->SetLineStyle(2);
    gr_GIF_Num->SetLineWidth(3);
-   gr_GIF_Num->SetMarkerStyle(22);
+   gr_GIF_Num->SetMarkerStyle(23);
    gr_GIF_Num->SetName("gr_GIF_Num");
 
-   gr_IV_Num->SetMarkerColor(kGreen-6);
-   gr_IV_Num->SetLineColor(kGreen);
+   gr_IV_Num->SetMarkerColor(kRed);
+   gr_IV_Num->SetLineColor(kRed);
    gr_IV_Num->SetMarkerStyle(22);
    gr_IV_Num->SetLineStyle(2);
    gr_IV_Num->SetLineWidth(3);
    gr_IV_Num->SetName("gr_IV_Num");
 
-   gr_V_Num->SetMarkerColor(kBlack);
-   gr_V_Num->SetLineColor(kBlack);
-   gr_V_Num->SetMarkerStyle(22);
+   gr_V_Num->SetMarkerColor(kRed);
+   gr_V_Num->SetLineColor(kRed);
+   gr_V_Num->SetMarkerStyle(21);
    gr_V_Num->SetLineStyle(2);
    gr_V_Num->SetLineWidth(3);
    gr_V_Num->SetName("gr_V_Num");
@@ -223,24 +227,24 @@ void GE11sEfficiencyScan(int RunNumber, string RunName, string path)
    hframe->GetYaxis()->SetLabelOffset(99);
    hframe->Draw("Y+");
    
-   gr_GIF_Num->Draw("CPY+");
-   gr_IV_Num->Draw("CPY+");
-   gr_V_Num->Draw("CPY+");
+//   gr_GIF_Num->Draw("PY+");
+   gr_IV_Num->Draw("PY+");
+//   gr_V_Num->Draw("PY+");
 
    //Draw the Legend 
-   TLegend *leg = new TLegend(0.10,0.732,0.40,0.90);
-   leg->AddEntry(gr_GIF,"GE11_IV_GIF eff","LPE");
-   leg->AddEntry(gr_IV,"GE11_IV eff","LPE");
-   leg->AddEntry(gr_V,"GE11_V eff","LPE");
-   leg->AddEntry(gr_GIF_Num,"No of events_GE11_IV_GIF","LPE");
-   leg->AddEntry(gr_IV_Num,"No of events_GE11_IV","LPE");
-   leg->AddEntry(gr_V_Num,"No of events_GE11_V","LPE");
+   TLegend *leg = new TLegend(0.65,0.632,0.85,0.70);
+//   leg->AddEntry(gr_GIF,"GE11_IV_GIF eff","PE");
+   leg->AddEntry(gr_IV,"GE11_IV eff","PE");
+//   leg->AddEntry(gr_V,"GE11_V eff","PE");
+//   leg->AddEntry(gr_GIF_Num,"No of events_GE11_IV_GIF","P");
+   leg->AddEntry(gr_IV_Num,"No of events_GE11_IV","P");
+//   leg->AddEntry(gr_V_Num,"No of events_GE11_V","P");
 
    leg->Draw("same");
 
    const char *runnum = RunName.c_str();
    
-   TLatex *t2a = new TLatex(0.00,0.94, runnum  );
+   TLatex *t2a = new TLatex(0.10,0.94, runnum  );
    t2a->SetNDC();
    t2a->SetTextFont(42);
    t2a->SetTextSize(0.033);

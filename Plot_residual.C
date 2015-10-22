@@ -37,7 +37,8 @@ void Plot_residual()
     int iPeriod = 0;    // 1=7TeV, 2=8TeV, 3=7+8TeV, 7=7+8+13TeV, 0=free form (uses lumi_sqrtS)
 
     ifstream residualFile;
-    residualFile.open("Residual_Tracker.dat");
+    residualFile.open("Residual_rotation_Tracker.dat");
+    //residualFile.open("Residual_Tracker.dat");
 
     vector<double> Res_g1x, Res_g1y, Res_g2x, Res_g2y, Res_g3x, Res_g3y;
 
