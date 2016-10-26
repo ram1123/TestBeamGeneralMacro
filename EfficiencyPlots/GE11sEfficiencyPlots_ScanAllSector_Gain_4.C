@@ -90,6 +90,7 @@ void GE11sEfficiencyPlots_ScanAllSector_Gain_4()
 
    // Set TDR Style
    setTDRStyle();
+   gStyle->SetOptFit(0);
 
    writeExtraText = true;       // if extra text
    extraText  = "#italic{Preliminary}";  // default extra text is "Preliminary"
@@ -178,15 +179,15 @@ void GE11sEfficiencyPlots_ScanAllSector_Gain_4()
    pad->Draw();
    pad->cd();
 
-   TF1 *f1 = new TF1("f1","0.5*(1.0+TMath::Erf((x*[0]-[1])+0.5*[2]))",60,90);
-   TF1 *f2 = new TF1("f2","0.5*(1.0+TMath::Erf((x*[0]-[1])+0.5*[2]))",60,90);
-   TF1 *f3 = new TF1("f3","0.5*(1.0+TMath::Erf((x*[0]-[1])+0.5*[2]))",73,90);
-   TF1 *f4 = new TF1("f4","0.5*(1.0+TMath::Erf((x*[0]-[1])+0.5*[2]))",60,90);
+   TF1 *f1 = new TF1("f1","[0]+(0.987)/([1]+exp(-[2]*(x-76)))",72,88);
+   TF1 *f2 = new TF1("f2","[0]+(0.968)/([1]+exp(-[2]*(x-77.7)))",72,89);
+   TF1 *f3 = new TF1("f3","[0]+(0.973)/([1]+exp(-[2]*(x-79)))",72,89);
+   TF1 *f4 = new TF1("f4","[0]+(0.985)/([1]+exp(-[2]*(x-67)))",62,78);
 
 //   f3->SetParameters(1.,1.,1.);
-   f3->SetParLimits(0,2,5);
-   f3->SetParLimits(1,0,20);
-   f3->SetParLimits(2,-10,0);
+//   f3->SetParLimits(0,2,5);
+//   f3->SetParLimits(1,0,20);
+//   f3->SetParLimits(2,-10,0);
 
       // create first graph
    TGraphErrors *gr1 = new TGraphErrors(NT_Detector1_HV.size());
@@ -204,9 +205,10 @@ void GE11sEfficiencyPlots_ScanAllSector_Gain_4()
    gr1->SetTitle(GraphTitle);
    gr1->GetYaxis()->SetRangeUser(0,1.01);
    //gr1->GetXaxis()->SetLimits(104,23211);
-   gr1->GetXaxis()->SetLimits(58.5,99);
+   gr1->GetXaxis()->SetLimits(61,99);
    gr1->GetYaxis()->SetDecimals(1);
-//   gr1->Fit("f1","ER");
+   f1->SetLineColor(kGreen+3);
+   gr1->Fit("f1","ER");
    gr1->Draw("AP");
       // create first graph
    TGraphErrors *gr5 = new TGraphErrors(NT_Detector2_HV.size());
@@ -222,7 +224,8 @@ void GE11sEfficiencyPlots_ScanAllSector_Gain_4()
    gr5->GetYaxis()->SetTitle("Efficiency");
    gr5->SetTitle(GraphTitle);
    //gr5->GetXaxis()->SetRangeUser(500,810);
-//   gr5->Fit("f2","R");
+   f2->SetLineColor(kBlack);
+   gr5->Fit("f2","R");
    gr5->Draw("SameP");
       // create first graph
    TGraphErrors *gr8 = new TGraphErrors(NT_Detector3_HV.size());
@@ -238,7 +241,8 @@ void GE11sEfficiencyPlots_ScanAllSector_Gain_4()
    gr8->GetYaxis()->SetTitle("Efficiency");
    gr8->SetTitle(GraphTitle);
    //gr8->GetXaxis()->SetRangeUser(500,810);
-//   gr8->Fit("f3","R");
+   f3->SetLineColor(kBlue);
+   gr8->Fit("f3","R");
    gr8->Draw("SameP");
       // create first graph
    TGraphErrors *gr9 = new TGraphErrors(NT_Detector4_HV.size());
@@ -254,7 +258,8 @@ void GE11sEfficiencyPlots_ScanAllSector_Gain_4()
    gr9->GetYaxis()->SetTitle("Efficiency");
    gr9->SetTitle(GraphTitle);
    //gr9->GetXaxis()->SetRangeUser(500,810);
-//   gr9->Fit("f4","R");
+   f4->SetLineColor(kMagenta+2);
+   gr9->Fit("f4","R");
    gr9->Draw("SameP");
    //Draw the Legend 
    TLegend *leg = new TLegend(0.55,0.400,0.80,0.50);
@@ -295,7 +300,7 @@ void GE11sEfficiencyPlots_ScanAllSector_Gain_4()
    text3->SetTextSize(0.04);
    text4->SetTextSize(0.04);
    text5->SetTextSize(0.04);
-   TLatex *cmsprem = new TLatex(58.5,1.015,"CMS");
+   TLatex *cmsprem = new TLatex(61,1.015,"CMS");
    //TLatex *cmsprem = new TLatex(58.5,1.03,"#it{Preliminary}");
    //TLatex *cmsprem = new TLatex(58.5,1.03,"CMS #it{Preliminary}");
    TLatex *gen = new TLatex(94.9,1.015,"GE1/1");
