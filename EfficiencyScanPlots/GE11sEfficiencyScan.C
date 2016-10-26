@@ -35,10 +35,13 @@
 #include "TGaxis.h"
 #include "TFrame.h"
 #include "TLegend.h"
+#include "setTDRStyle.C"
+
 
 void GE11sEfficiencyScan(int RunNumber, string RunName, string path)
 {
-   
+setTDRStyle();
+
    ifstream InGE11_IV_GIF, InGE11_IV, InGE11_V;
 
    //string path = "/home/ramkrishna/TEMP/LogFiles_TB/LogFiles306To407";	    
@@ -134,7 +137,7 @@ void GE11sEfficiencyScan(int RunNumber, string RunName, string path)
    pad->cd();
 
       // draw a frame to define the range
-   TH1F *hr = pad->DrawFrame(0,-0.5,100,1.1);
+   TH1F *hr = pad->DrawFrame(0,0.0,100,1.1);
    hr->SetXTitle("Detector Position (mm)");
    hr->SetYTitle("Efficiency");
    //pad->GetFrame()->SetFillColor(21);
@@ -164,12 +167,17 @@ void GE11sEfficiencyScan(int RunNumber, string RunName, string path)
    gr_GIF->SetTitle("Efficiency Scan");
 //   gr_GIF->Draw("AP");
    gr_IV->GetYaxis()->SetTitle("Efficiency");
-   gr_IV->GetXaxis()->SetTitle("Distance (mm) of selected patch of 5mm in #left(i#eta, i#phi#right) = #left(5,2#right) sector");
+   gr_IV->GetXaxis()->SetTitle("Position (mm) of selected patch of 5mm");
+   //gr_IV->GetXaxis()->SetTitle("Distance (mm) of selected patch of 5mm in #left(i#eta, i#phi#right) = #left(5,2#right) sector");
    gr_IV->SetMarkerColor(kBlack);
    gr_IV->SetLineColor(kBlack);
    gr_IV->SetMarkerStyle(22);
-   gr_IV->Draw("AP");
+   gr_IV->GetYaxis()->SetRangeUser(0,1.1);
+   gr_IV->GetXaxis()->SetLimits(0,100);
    gr_IV->GetYaxis()->SetDecimals(1);
+   gr_IV->GetYaxis()->SetTickLength(0.0);
+   gr_IV->SetTitle("");
+   gr_IV->Draw("AP");
 //   gr_IV->Draw("sameP");
    gr_V->SetMarkerColor(kBlack);
    gr_V->SetLineColor(kBlack);
@@ -225,19 +233,21 @@ void GE11sEfficiencyScan(int RunNumber, string RunName, string path)
    TH1F *hframe = overlay->DrawFrame(xmin,ymin,xmax,ymax);
    hframe->GetXaxis()->SetLabelOffset(99);
    hframe->GetYaxis()->SetLabelOffset(99);
-   hframe->Draw("Y+");
+//   hframe->Draw("Y+");
    
 //   gr_GIF_Num->Draw("PY+");
    gr_IV_Num->Draw("PY+");
 //   gr_V_Num->Draw("PY+");
 
    //Draw the Legend 
-   TLegend *leg = new TLegend(0.65,0.632,0.85,0.70);
+   TLegend *leg = new TLegend(0.59,0.650,0.90,0.75);
+   leg->SetTextFont(42);
+   leg->SetTextSize(0.04);
 //   leg->AddEntry(gr_GIF,"GE11_IV_GIF eff","PE");
-   leg->AddEntry(gr_IV,"GE11_IV eff","PE");
+   leg->AddEntry(gr_IV,"GE1/1: efficiency","PE");
 //   leg->AddEntry(gr_V,"GE11_V eff","PE");
 //   leg->AddEntry(gr_GIF_Num,"No of events_GE11_IV_GIF","P");
-   leg->AddEntry(gr_IV_Num,"No of events_GE11_IV","P");
+   leg->AddEntry(gr_IV_Num,"GE1/1: No. of events ","PE");
 //   leg->AddEntry(gr_V_Num,"No of events_GE11_V","P");
 
    leg->Draw("same");
@@ -249,20 +259,51 @@ void GE11sEfficiencyScan(int RunNumber, string RunName, string path)
    t2a->SetTextFont(42);
    t2a->SetTextSize(0.033);
    t2a->SetTextAlign(13);
-   t2a->Draw("same");
+//   t2a->Draw("same");
+   
+   TLatex *cmsprem = new TLatex(0,1570,"#it{Preliminary}");
+   //TLatex *cmsprem = new TLatex(0,1570,"CMS #it{Preliminary}");
+   cmsprem->Draw("same");
+   TLatex *cmsprem1 = new TLatex(90,1570,"GE1/1");
+   cmsprem1->Draw("same");
+
+   TLatex *txt1 = new TLatex(7.5,1200,"Threshold = 1.6fC");
+   TLatex *txt2 = new TLatex(7.5,1100,"Beam: Muon");
+   TLatex *txt3 = new TLatex(7.5,1000,"Gap Config: 3/1/2/1 mm");
+   TLatex *txt4 = new TLatex(7.5,900,"Gas: Ar/CO_{2} (70/30)");
+   TLatex *txt5 = new TLatex(7.5,800,"E_{gain} = 77.4 kV/cm");
+   txt1->SetTextFont(42);
+   txt1->SetTextSize(0.04);
+   txt1->Draw("same");
+   txt2->SetTextFont(42);
+   txt2->SetTextSize(0.04);
+   txt2->Draw("same");
+   txt3->SetTextFont(42);
+   txt3->SetTextSize(0.04);
+   txt3->Draw("same");
+   txt4->SetTextFont(42);
+   txt4->SetTextSize(0.04);
+   txt4->Draw("same");
+   txt5->SetTextFont(42);
+   txt5->SetTextSize(0.04);
+   txt5->Draw("same");
    
    
    //Draw an axis on the right side
-   TGaxis *axis = new TGaxis(xmax,ymin,xmax, ymax,ymin,ymax,510,"+L");
+   TGaxis *axis = new TGaxis(xmax,ymin,xmax, ymax,ymin,1200,10,"+L");
    axis->SetLineColor(kRed);
    axis->SetLabelColor(kRed);
-   axis->SetTitle("Approx. No. of Events");
+   axis->SetTitle("Number of events");
+   axis->SetTitleOffset(1.1);
 
    axis->Draw();
 
    string OutputFileName = "GE11_Efficiency_Scan_"+std::to_string(RunNumber)+".pdf";
+   string OutputFileNamepng = "GE11_Efficiency_Scan_"+std::to_string(RunNumber)+".png";
    const char *CharOutputFileName = OutputFileName.c_str();
+   const char *CharOutputFileNamepng = OutputFileNamepng.c_str();
    c1->SaveAs(CharOutputFileName);
+   c1->SaveAs(CharOutputFileNamepng);
 
    c1->Write();
    //tree->Write();

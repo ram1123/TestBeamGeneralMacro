@@ -76,8 +76,8 @@ void setTDRStyle() {
   // Margins:
   tdrStyle->SetPadTopMargin(1.05);
   tdrStyle->SetPadBottomMargin(0.13);
-  tdrStyle->SetPadLeftMargin(0.11);
-  tdrStyle->SetPadRightMargin(0.08);
+  tdrStyle->SetPadLeftMargin(0.09);
+  tdrStyle->SetPadRightMargin(0.09);
 
   // For the Global title:
 
@@ -102,7 +102,7 @@ void setTDRStyle() {
   // tdrStyle->SetTitleXSize(Float_t size = 0.02); // Another way to set the size?
   // tdrStyle->SetTitleYSize(Float_t size = 0.02);
   tdrStyle->SetTitleXOffset(0.9);
-  tdrStyle->SetTitleYOffset(0.75);
+  tdrStyle->SetTitleYOffset(0.7);
   // tdrStyle->SetTitleOffset(1.1, "Y"); // Another way to set the Offset
 
   // For the axis labels:
@@ -119,7 +119,7 @@ void setTDRStyle() {
   tdrStyle->SetTickLength(0.03, "XYZ");
   tdrStyle->SetNdivisions(510, "XYZ");
   tdrStyle->SetPadTickX(1);  // To get tick marks on the opposite side of the frame
-  tdrStyle->SetPadTickY(1);
+  tdrStyle->SetPadTickY(0);
 
   // Change for log plots:
   tdrStyle->SetOptLogx(0);

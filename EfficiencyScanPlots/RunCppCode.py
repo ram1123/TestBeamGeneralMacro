@@ -9,13 +9,13 @@ import subprocess
 pathOfInputFile="/home/ramkrishna/TEMP/LogFiles_TB/2014H4C_LogFiles_1868To1906"
 
 #for n in range(306,307):                                                # Modified by user
-for n in range(1868,1906):                                                # Modified by user
+for n in range(1048):                                                # Modified by user
     #os.system('grep Run0306 RunList.dat')
     #output = subprocess.check_output("grep Run0306 RunList.dat", shell=True)
     #print "Output = ",n
     #output = output.replace(" ", "")
-    #with open("RunList.dat") as openfile:                               # This input file list is for H2 only
-    with open("H4RunList.dat") as openfile:                               # This input file list is for H2 only
+    #with open("H4RunList.dat") as openfile:                               # This input file list is for H2 only
+    with open("RunList.dat") as openfile:                               # This input file list is for H2 only
         for line in openfile:
             for part in line.split():
                 if "Run"+str(n) in part:                               # Modified by user "Run0" should be replaced accordingly
