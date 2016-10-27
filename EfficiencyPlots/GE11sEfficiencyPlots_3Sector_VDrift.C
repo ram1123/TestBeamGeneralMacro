@@ -88,7 +88,7 @@ void GE11sEfficiencyPlots_3Sector_VDrift()
    while (1) 
    {
      File1 >> current >> eff >> efferr;
-     cout<<"1==> "<<current<<"\t"<<eff<<"\t"<<efferr<<endl;
+     cout<<"1==> "<<current*4.7<<"\t"<<eff<<"\t"<<efferr<<endl;
 	if (!File1.good()) break;
 
 	NT_Detector1_HV.push_back(current*4.7);	// 4.7M ohm is the equivalent resistance, so this will give drift voltage in Volts
@@ -151,10 +151,10 @@ void GE11sEfficiencyPlots_3Sector_VDrift()
    pad->cd();
 
 
-   TF1 *f1 = new TF1("f1","[0]+(0.987)/([1]+exp(-[2]*(x-3293.6)))",3050,3780);
-   TF1 *f2 = new TF1("f2","[0]+(0.973)/([1]+exp(-[2]*(x-3350)))",3000,3800);
-   TF1 *f3 = new TF1("f3","[0]+(0.973)/([1]+exp(-[2]*(x-3410)))",3150,3830);
-   TF1 *f4 = new TF1("f4","[0]+(0.985)/([1]+exp(-[2]*(x-2885)))",2650,3400);
+   TF1 *f1 = new TF1("f1","(0.981)/([0]+exp(-[1]*(x-3292.00)))",3000,3756);
+   TF1 *f2 = new TF1("f2","(0.973)/([0]+exp(-[1]*(x-3350)))",3000,3800);
+   TF1 *f3 = new TF1("f3","(0.973)/([0]+exp(-[1]*(x-3410)))",3000,3830);
+   TF1 *f4 = new TF1("f4","(0.985)/([0]+exp(-[1]*(x-2885)))",2650,3400);
 
    f1->SetParameters(1.,1.,1.);
 

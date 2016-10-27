@@ -33,7 +33,7 @@
 #include "CMS_lumi.C"
 //#include ".h"
 
-void GE11sEfficiencyPlots_ScanAllSector_Gain_4()
+void GE11sEfficiencyPlots_3Sector_EGain()
 {
    
    // Input Files 
@@ -74,10 +74,10 @@ void GE11sEfficiencyPlots_ScanAllSector_Gain_4()
    const char* ClockMode = "";
    const char* EtaPhiSector = "";
 
-   const char* CanvasName   = "Efficiency_R306_R407";
-   const char* pdfFile	    = "EfficiencyPlot_wrt_EGain_wError4times_2gas.pdf";
-   const char* pngFile	    = "EfficiencyPlot_wrt_EGain_wError4times_2gas.png";
-   TFile *f = new   TFile(    "Efficiency_R306_R407.root","RECREATE");
+   const char* CanvasName   = "Efficiency_Vs_EGain";
+   const char* pdfFile	    = "EfficiencyPlot_wrt_EGain_wError4times_2gas_3sector.pdf";
+   const char* pngFile	    = "EfficiencyPlot_wrt_EGain_wError4times_2gas_3sector.png";
+   TFile *f = new   TFile(    "Efficiency_Vs_EGain.root","RECREATE");
 
    TGaxis::SetMaxDigits(3);
 //   gStyle->SetOptFit(0000);
@@ -96,10 +96,10 @@ void GE11sEfficiencyPlots_ScanAllSector_Gain_4()
    extraText  = "#italic{Preliminary}";  // default extra text is "Preliminary"
    int iPeriod = 0;    // 1=7TeV, 2=8TeV, 3=7+8TeV, 7=7+8+13TeV, 0=free form (uses lumi_sqrtS)
 
-   TNtuple *NT_Detector1 = new TNtuple(Detector1,"data from text file","NT_Detector1_CurrentToHVDivider:NT_Detector1_Eff:NT_Detector1_EffErr");
-   TNtuple *NT_Detector2 = new TNtuple(Detector2,"data from text file","NT_Detector2_CurrentToHVDivider:NT_Detector2_Eff:NT_Detector2_EffErr");
-   TNtuple *NT_Detector3 = new TNtuple(Detector3,"data from text file","NT_Detector3_CurrentToHVDivider:NT_Detector3_Eff:NT_Detector3_EffErr");
-   TNtuple *NT_Detector4 = new TNtuple(Detector4,"data from text file","NT_Detector4_CurrentToHVDivider:NT_Detector4_Eff:NT_Detector4_EffErr");
+   TNtuple *NT_Detector1 = new TNtuple("EtaPhi52_ArCO2CF4","Efficiency Vs EGain","EGain:Efficiency:Efficiency Error");
+   TNtuple *NT_Detector2 = new TNtuple("EtaPhi12_ArCO2CF4","Efficiency Vs EGain","EGain:Efficiency:Efficiency Error");
+   TNtuple *NT_Detector3 = new TNtuple("EtaPhi82_ArCO2CF4","Efficiency Vs EGain","EGain:Efficiency:Efficiency Error");
+   TNtuple *NT_Detector4 = new TNtuple("EtaPhi52_ArCO2"   ,"Efficiency Vs EGain","EGain:Efficiency:Efficiency Error");
 
    Int_t nlines = 0;
 
@@ -108,61 +108,61 @@ void GE11sEfficiencyPlots_ScanAllSector_Gain_4()
    while (1) 
    {
      File1 >> current >> eff >> efferr;
-     //cout<<"==> "<<current<<"\t"<<eff<<"\t"<<efferr<<endl;
+     cout<<"1==> "<<current<<"\t"<<eff<<"\t"<<efferr<<endl;
 	if (!File1.good()) break;
 
 	NT_Detector1_Gain.push_back(exp(-16.0236+0.0318232*current));
-	NT_Detector1_HV.push_back(current*0.546/0.005);
+	NT_Detector1_HV.push_back(current*0.546/0.006);
 	//NT_Detector1_HV.push_back(current);
 	NT_Detector1_Eff.push_back(eff);
         NT_Detector1_EffErr.push_back(efferr);
 
-	NT_Detector1->Fill(current,eff,efferr);
+	NT_Detector1->Fill(current*0.546/6.0,eff,efferr);
 	nlines++;
    }
    while (1) 
    {
      File2 >> current >> eff >> efferr;
-     //cout<<"==> "<<current<<"\t"<<eff<<"\t"<<efferr<<endl;
+     cout<<"2==> "<<current<<"\t"<<eff<<"\t"<<efferr<<endl;
 	if (!File2.good()) break;
 
 	NT_Detector2_Gain.push_back(exp(-16.0236+0.0318232*current));
-	NT_Detector2_HV.push_back(current*0.546/0.005);
+	NT_Detector2_HV.push_back(current*0.546/0.006);
 	//NT_Detector2_HV.push_back(current);
 	NT_Detector2_Eff.push_back(eff);
         NT_Detector2_EffErr.push_back(efferr);
 
-	NT_Detector2->Fill(current,eff,efferr);
+	NT_Detector2->Fill(current*0.546/6.0,eff,efferr);
 	nlines++;
    }
    while (1) 
    {
      File3 >> current >> eff >> efferr;
-     //cout<<"==> "<<current<<"\t"<<eff<<"\t"<<efferr<<endl;
+     cout<<"3==> "<<current<<"\t"<<eff<<"\t"<<efferr<<endl;
 	if (!File3.good()) break;
 
 	NT_Detector3_Gain.push_back(exp(-16.0236+0.0318232*current));
-	NT_Detector3_HV.push_back(current*0.546/0.005);
+	NT_Detector3_HV.push_back(current*0.546/0.006);
 	//NT_Detector3_HV.push_back(current);
 	NT_Detector3_Eff.push_back(eff);
         NT_Detector3_EffErr.push_back(efferr);
 
-	NT_Detector3->Fill(current,eff,efferr);
+	NT_Detector3->Fill(current*0.546/6.0,eff,efferr);
 	nlines++;
    }
    while (1) 
    {
      File4 >> current >> eff >> efferr;
-     //cout<<"==> "<<current<<"\t"<<eff<<"\t"<<efferr<<endl;
+     cout<<"4==> "<<current<<"\t"<<eff<<"\t"<<efferr<<endl;
 	if (!File4.good()) break;
 
 	NT_Detector4_Gain.push_back(exp(-16.0236+0.0318232*current));
-	NT_Detector4_HV.push_back(current*0.546/0.005);
+	NT_Detector4_HV.push_back(current*0.546/0.006);
 	//NT_Detector3_HV.push_back(current);
 	NT_Detector4_Eff.push_back(eff);
         NT_Detector4_EffErr.push_back(efferr);
 
-	NT_Detector4->Fill(current,eff,efferr);
+	NT_Detector4->Fill(current*0.546/6.0,eff,efferr);
 	nlines++;
    }
 
@@ -179,10 +179,10 @@ void GE11sEfficiencyPlots_ScanAllSector_Gain_4()
    pad->Draw();
    pad->cd();
 
-   TF1 *f1 = new TF1("f1","[0]+(0.987)/([1]+exp(-[2]*(x-76)))",72,88);
-   TF1 *f2 = new TF1("f2","[0]+(0.968)/([1]+exp(-[2]*(x-77.7)))",72,89);
-   TF1 *f3 = new TF1("f3","[0]+(0.973)/([1]+exp(-[2]*(x-79)))",72,89);
-   TF1 *f4 = new TF1("f4","[0]+(0.985)/([1]+exp(-[2]*(x-67)))",62,78);
+   TF1 *f1 = new TF1("f1","[0]+(0.989)/([1]+exp(-[2]*(x-63.43)))",59,73);
+   TF1 *f2 = new TF1("f2","(0.968)/([1]+exp(-[2]*(x-64.9)))",59,75);
+   TF1 *f3 = new TF1("f3","(0.973)/([1]+exp(-[2]*(x-66  )))",59,75);
+   TF1 *f4 = new TF1("f4","(0.985)/([1]+exp(-[2]*(x-55.8  )))",51,65);
 
 //   f3->SetParameters(1.,1.,1.);
 //   f3->SetParLimits(0,2,5);
@@ -205,7 +205,7 @@ void GE11sEfficiencyPlots_ScanAllSector_Gain_4()
    gr1->SetTitle(GraphTitle);
    gr1->GetYaxis()->SetRangeUser(0,1.01);
    //gr1->GetXaxis()->SetLimits(104,23211);
-   gr1->GetXaxis()->SetLimits(61,99);
+   gr1->GetXaxis()->SetLimits(50,85);
    gr1->GetYaxis()->SetDecimals(1);
    f1->SetLineColor(kGreen+3);
    gr1->Fit("f1","ER");
@@ -279,11 +279,11 @@ void GE11sEfficiencyPlots_ScanAllSector_Gain_4()
    leg->Draw("same");
    leg2->Draw("same");
 
-   TLatex *text1 = new TLatex(82,0.74,RunRange);
-   TLatex *text2 = new TLatex(82,0.66,BeamType);
-   TLatex *text5 = new TLatex(82,0.58,"Gap Config: 3/1/2/1 mm");
-   TLatex *text3 = new TLatex(82,0.48,"Gas: Ar/CO2 (70/30)");
-   TLatex *text4 = new TLatex(82,0.28,"Gas: Ar/CO2/CF4 (45/15/40)");
+   TLatex *text1 = new TLatex(70,0.74,RunRange);
+   TLatex *text2 = new TLatex(70,0.66,BeamType);
+   TLatex *text5 = new TLatex(70,0.58,"Gap Config: 3/1/2/1 mm");
+   TLatex *text3 = new TLatex(70,0.48,"Gas: Ar/CO2 (70/30)");
+   TLatex *text4 = new TLatex(70,0.28,"Gas: Ar/CO2/CF4 (45/15/40)");
 //   TLatex *text5 = new TLatex(81050,0.64,ClockMode);
    TLatex *text6 = new TLatex(3150,0.56,EtaPhiSector);
    TLatex *text7 = new TLatex(3250,0.48,GasUsed);
@@ -300,10 +300,10 @@ void GE11sEfficiencyPlots_ScanAllSector_Gain_4()
    text3->SetTextSize(0.04);
    text4->SetTextSize(0.04);
    text5->SetTextSize(0.04);
-   TLatex *cmsprem = new TLatex(61,1.015,"CMS");
+   TLatex *cmsprem = new TLatex(50,1.015,"CMS");
    //TLatex *cmsprem = new TLatex(58.5,1.03,"#it{Preliminary}");
    //TLatex *cmsprem = new TLatex(58.5,1.03,"CMS #it{Preliminary}");
-   TLatex *gen = new TLatex(94.9,1.015,"GE1/1");
+   TLatex *gen = new TLatex(81.2,1.015,"GE1/1");
 //   cmsprem->SetTextFont(42);
 //   cmsprem->SetTextSize(0.05);
 //   gen->SetTextFont(42);
