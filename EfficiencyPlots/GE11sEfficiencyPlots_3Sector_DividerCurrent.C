@@ -157,7 +157,6 @@ void GE11sEfficiencyPlots_3Sector_DividerCurrent()
    TF1 *f3 = new TF1("f3","(0.973)/([1]+exp(-[2]*(x-725)))",650,820);
    TF1 *f4 = new TF1("f4","(0.985)/([1]+exp(-[2]*(x-614)))",565,720);
 
-//   f3->SetParameters(1.,1.,1.);
 
       // create first graph
    TGraphErrors *gr1 = new TGraphErrors(NT_Detector1_HV.size());
@@ -222,15 +221,15 @@ void GE11sEfficiencyPlots_3Sector_DividerCurrent()
    gr9->Fit("f4","R");
 
 TMultiGraph *mg = new TMultiGraph("mg",";Current Supplied to HV Divider (#mu A);Efficiency");
-mg->Add(gr1);
-mg->Add(gr5);
-mg->Add(gr8);
+//mg->Add(gr1);
+//mg->Add(gr5);
+//mg->Add(gr8);
 mg->Add(gr9);
 mg->SetMaximum(1.01);
 mg->SetMinimum(0.0);
-//mg->GetYaxis()->SetRangeUser(570.,820.);
 mg->Draw("AP");
-mg->GetXaxis()->SetLimits(560,890);
+mg->GetXaxis()->SetLimits(560,750);
+mg->GetXaxis()->SetNdivisions(510,kTRUE);
 mg->GetYaxis()->SetDecimals(1);
 
 
@@ -243,22 +242,19 @@ mg->GetYaxis()->SetDecimals(1);
    leg2->SetTextFont(42);
    leg->SetTextSize(0.05);
    leg->SetTextFont(42);
-   //leg->AddEntry(gr1,"(i#eta,i#phi)=(1,2)","LPE");
-   //leg->AddEntry(gr5,"(i#eta,i#phi)=(5,2)","LPE");
-   //leg->AddEntry(gr8,"(i#eta,i#phi)=(8.2)","LPE");
    leg->AddEntry(gr9,Detector4,"PE");
    leg2->AddEntry(gr5,Detector2,"PE");
    leg2->AddEntry(gr1,Detector1,"PE");
    leg2->AddEntry(gr8,Detector3,"PE");
 
    leg->Draw("same");
-   leg2->Draw("same");
+   //leg2->Draw("same");
 
-   TLatex *text1 = new TLatex(750,0.74,RunRange);
-   TLatex *text2 = new TLatex(750,0.66,BeamType);
-   TLatex *text5 = new TLatex(750,0.58,"Gap Config: 3/1/2/1 mm");
-   TLatex *text3 = new TLatex(750,0.48,"Gas: Ar/CO2 (70/30)");
-   TLatex *text4 = new TLatex(750,0.28,"Gas: Ar/CO2/CF4 (45/15/40)");
+   TLatex *text1 = new TLatex(665,0.74,RunRange);
+   TLatex *text2 = new TLatex(665,0.66,BeamType);
+   TLatex *text5 = new TLatex(665,0.58,"Gap Config: 3/1/2/1 mm");
+   TLatex *text3 = new TLatex(665,0.48,"Gas: Ar/CO2 (70/30)");
+   TLatex *text4 = new TLatex(665,0.28,"Gas: Ar/CO2/CF4 (45/15/40)");
 //   TLatex *text5 = new TLatex(81050,0.64,ClockMode);
    TLatex *text6 = new TLatex(3150,0.56,EtaPhiSector);
    TLatex *text7 = new TLatex(3250,0.48,GasUsed);
@@ -276,43 +272,40 @@ mg->GetYaxis()->SetDecimals(1);
    text4->SetTextSize(0.04);
    text5->SetTextSize(0.04);
    TLatex *cmsprem = new TLatex(560,1.015,"CMS #it{Preliminary}");
-   //TLatex *cmsprem = new TLatex(58.5,1.03,"#it{Preliminary}");
-   //TLatex *cmsprem = new TLatex(58.5,1.03,"CMS #it{Preliminary}");
    TLatex *gen = new TLatex(855,1.015,"GE1/1");
 //   cmsprem->SetTextFont(42);
 //   cmsprem->SetTextSize(0.05);
-//   gen->SetTextFont(42);
-//   gen->SetTextSize(0.05);
-//   cmsprem->SetTextSize(0.04);
    text1->Draw("same");
    text2->Draw("same");
    text3->Draw("same");
-   text4->Draw("same");
+   //text4->Draw("same");
    text5->Draw("same");
    text6->Draw("same");
    text7->Draw("same");
-   cmsprem->Draw("same");
-   gen->Draw("same");
-//
+   //cmsprem->Draw("same");
+   //gen->Draw("same");
 ////   CMS_lumi( c1, iPeriod, 0 );
 //   
 
-//   Float_t rightmax = 1.1*gr1->GetMaximum();
+   Float_t rightmax = 1.1*gr1->GetMaximum();
 
+	// Ref: https://root.cern.ch/root/htmldoc/tutorials/hist/twoscales.C.html
    //draw an axis on the right side
-//   TGaxis *axis = new TGaxis(gPad->GetUxmin(),gPad->GetUymin(),
-//	   gPad->GetUxmax(), gPad->GetUymax(),0,rightmax,510,"+L");
-//   TGaxis *axis = new TGaxis(104,1.01,23211,1.01,3370,4252,15,"-");
-//   cout<<"GetUxmax = "<<gPad->GetUxmin()<<"\tGetUymin = "<<gPad->GetUxmax()<<endl;
-//   cout<<"GetUxmax = "<<gPad->GetUymin()<<"\tGetUymin = "<<gPad->GetUymax()<<endl;
-//   axis->SetTitle("V_Drift (volts)");
-// //  axis->SetTitleSize(2.5);
-//  axis->SetTitleFont(42);
-//  axis->SetTitleColor(1);
-//  //axis->SetTitleFontSize(0.05);
-//   axis->SetLineColor(kBlack);
-//   axis->SetLabelColor(kBlack);
-//   axis->Draw("sames");
+   TGaxis *axis_1 = new TGaxis(560,1.01,750,1.01,
+   								0.560*4.7,0.750*4.7,510,"-");
+   //TGaxis *axis_1 = new TGaxis(104,1.01,23211,1.01,3370,4252,15,"-");
+   cout<<"GetUxmax = "<<gPad->GetUxmin()<<"\tGetUxmin = "<<gPad->GetUxmax()<<endl;
+   cout<<"GetUymax = "<<gPad->GetUymin()<<"\tGetUymin = "<<gPad->GetUymax()<<endl;
+   axis_1->SetTitle("V_Drift (kV)");
+   axis_1->SetLabelSize(0.04);
+   axis_1->SetTextFont(42);
+ //  axis_1->SetTitleSize(2.5);
+  axis_1->SetTitleFont(42);
+  axis_1->SetTitleColor(1);
+  //axis_1->SetTitleFontSize(0.05);
+   axis_1->SetLineColor(kBlack);
+   axis_1->SetLabelColor(kBlack);
+   axis_1->Draw("sames");
 
    c1->Update();
    c1->SaveAs(pdfFile);
