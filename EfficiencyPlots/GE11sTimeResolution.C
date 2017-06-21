@@ -87,6 +87,7 @@ void GE11sTimeResolution()
 
    // Set TDR Style
    setTDRStyle();
+   gStyle->SetOptFit(0);
 
    writeExtraText = true;       // if extra text
    extraText  = "#italic{Preliminary}";  // default extra text is "Preliminary"
@@ -118,7 +119,7 @@ void GE11sTimeResolution()
    while (1) 
    {
      File2 >> current >> eff >> efferr;
-     //cout<<"==> "<<current<<"\t"<<eff<<"\t"<<efferr<<endl;
+     cout<<"==> "<<current<<"\t"<<eff<<"\t"<<efferr<<endl;
 	if (!File2.good()) break;
 
 	NT_Detector2_HV.push_back(current);
@@ -132,7 +133,7 @@ void GE11sTimeResolution()
    while (1) 
    {
      File3 >> current >> eff >> efferr;
-     //cout<<"==> "<<current<<"\t"<<eff<<"\t"<<efferr<<endl;
+     cout<<"==> "<<current<<"\t"<<eff<<"\t"<<efferr<<endl;
 	if (!File3.good()) break;
 
 	NT_Detector3_HV.push_back(current);
@@ -170,16 +171,11 @@ void GE11sTimeResolution()
    pad->Draw();
    pad->cd();
 
-   TF1 *f1 = new TF1("f1","[0]/(1+exp(x*[1]/[2]))",2.2,2.8);
-   TF1 *f2 = new TF1("f2","0.5*(1.0+TMath::Erf((x*[0]-[1])+0.5*[2]))",650,820);
-   TF1 *f3 = new TF1("f3","0.5*(1.0+TMath::Erf((x*[0]-[1])+0.5*[2]))",650,820);
+   TF1 *f1 = new TF1("f1","pol2",2.28,2.7);
+   TF1 *f2 = new TF1("f2","pol6",2.55,3.00);
 
-   f1->SetParameters(0.982,2.2,62.5);
-   f3->SetParLimits(0,2,5);
-   f3->SetParLimits(1,0,20);
-   f3->SetParLimits(2,-10,0);
 
-      // create first graph
+   // create first graph
    TGraphErrors *gr1 = new TGraphErrors(NT_Detector1_HV.size());
    for(unsigned int i=0;i<NT_Detector1_HV.size();i++)
    {
@@ -197,7 +193,8 @@ void GE11sTimeResolution()
    //gr1->GetXaxis()->SetLimits(104,23211);
    gr1->GetXaxis()->SetLimits(2.1,3.5);
    gr1->GetYaxis()->SetDecimals(1);
-//   gr1->Fit("f1","ER");
+   f1->SetLineColor(kMagenta+2);
+   gr1->Fit("f1","ER");
    gr1->Draw("AP");
       // create first graph
    TGraphErrors *gr5 = new TGraphErrors(NT_Detector2_HV.size());
@@ -213,7 +210,7 @@ void GE11sTimeResolution()
    gr5->GetYaxis()->SetTitle("Efficiency");
    gr5->SetTitle(GraphTitle);
    //gr5->GetXaxis()->SetRangeUser(500,810);
-//   gr5->Fit("f2","R");
+   //gr5->Fit("f2","R");
    //gr5->Draw("SameP");
       // create first graph
    TGraphErrors *gr8 = new TGraphErrors(NT_Detector3_HV.size());
@@ -229,7 +226,8 @@ void GE11sTimeResolution()
    gr8->GetYaxis()->SetTitle("Efficiency");
    gr8->SetTitle(GraphTitle);
    //gr8->GetXaxis()->SetRangeUser(500,810);
-//   gr8->Fit("f3","ER");
+   f2->SetLineColor(kGreen+3);
+   gr8->Fit("f2","ER");
    gr8->Draw("SameP");
       // create first graph
    TGraphErrors *gr9 = new TGraphErrors(NT_Detector4_HV.size());

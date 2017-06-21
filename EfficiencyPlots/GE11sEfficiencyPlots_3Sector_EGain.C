@@ -300,7 +300,7 @@ void GE11sEfficiencyPlots_3Sector_EGain()
    text3->SetTextSize(0.04);
    text4->SetTextSize(0.04);
    text5->SetTextSize(0.04);
-   TLatex *cmsprem = new TLatex(50,1.015,"CMS");
+   TLatex *cmsprem = new TLatex(50,1.015,"CMS #it{Preliminary}");
    //TLatex *cmsprem = new TLatex(58.5,1.03,"#it{Preliminary}");
    //TLatex *cmsprem = new TLatex(58.5,1.03,"CMS #it{Preliminary}");
    TLatex *gen = new TLatex(81.2,1.015,"GE1/1");
